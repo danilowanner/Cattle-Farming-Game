@@ -1,0 +1,512 @@
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
+
+html, body {
+	margin: 0;
+	padding: 0;
+	background-image: url(images/250_bg.png);
+	background-size: 750px 580px;
+	 
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	line-height: 1.2em;
+	
+	-moz-user-select: none; -webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+}
+
+p {
+	margin: 0 0 10px 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+.highlight {
+	animation: highlight 1s infinite;
+	-webkit-animation: highlight 1s infinite; /* Safari and Chrome */
+}
+
+@keyframes highlight
+{
+	0% { opacity: 1; }
+	50% { opacity: 0.1; }
+	100% { opacity: 1; }
+}
+@-webkit-keyframes highlight /* Safari and Chrome */
+{
+	0% { opacity: 1; }
+	50% { opacity: 0.1; }
+	100% { opacity: 1; }
+}
+
+
+.gameCanvasContainer {
+	margin: 0; padding: 0;
+}
+.gameCanvasContainer canvas{
+	position: absolute;
+	top: 0; left: 0;
+	display: block;
+	/*image-rendering: -webkit-optimize-contrast;*/
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+#gameCanvas {
+	
+}
+.textOut {
+	z-index: 10;
+	font-size: 9px;
+	position: fixed;
+	bottom: 1px;
+	right: 1px;
+	color: #fff;
+	background-color: #444;
+	padding: 0 4px;
+	opacity: 0.5;
+}
+.renderTime, .tickTime, .experimenterHint {
+	z-index: 10;
+	font-size: 9px;
+	position: fixed;
+	top: 1px;
+	right: 1px;
+	color: #fff;
+	background-color: #666;
+	padding: 0 4px;
+	opacity: 0.6;
+}
+.tickTime {
+	right: 30px;
+}
+.experimenterHint {
+	left: 1px; right: auto;
+}
+
+
+a.loadButton {
+	display: block;
+	background-color: rgba(255,255,255,1);
+	color: #000;
+	padding: 1em;
+	text-align: center;
+	font-size: 2em;
+	font-weight: bold;
+	width: 30%;
+	text-align: center;
+	margin: 2em auto;
+}
+a.loadButton img{
+	width: 80%;
+	margin-bottom: 1em;
+}
+
+.introtext {
+	margin: 8% auto 20px auto;
+	width: 80%;
+	background-color: #fff;
+	padding: 20px;
+	font-size: 0.8em;
+}
+
+
+.videoTutorial {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+}
+video.tutorial
+{
+	width: 100%;
+	height: 100%;
+}
+
+.stats, .actions, .confirm, .menu {
+	position: fixed;
+	color: #000;
+	display: none;
+	-moz-user-select: none;-webkit-user-select: none;
+}
+
+
+h2 {
+	font-size: 1.4em;
+	font-weight: bold;
+	color: #ccc;
+	text-align: center;
+	margin: 0 0 1em 0;
+}
+
+
+.actions a, .confirm a, .menu a, .loanactions a {
+	display: inline-block;
+	background-color: #fff;
+	color: #000;
+	font-size: 1em;
+	font-weight: bold;
+	margin: 0 0 0.3em 0.2em;
+	padding: 0.8em;
+	-moz-user-select: none;-webkit-user-select: none;
+	border-radius: 0.4em;
+}
+
+.stats 
+{
+	top: 1em;
+	left: 1em;
+	z-index: 20;
+	pointer-events:none;
+}
+.statsbg {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+	position:fixed;
+	z-index: 19;
+	display: none;
+}
+.quickstats {
+	float: left;
+	background-color: #fff;
+	padding: 0.8em;
+	transition: width 0.5s;
+	-webkit-transition: width 0.5s; /* Safari */
+}
+.quickstats {
+	color: #000;
+	pointer-events: all;
+}
+.quickstats .round{
+	font-size: 1em;
+}
+.quickstats p.savings strong, .quickstats p.loans strong{
+	display: inline-block;
+	width: 5em;
+}
+.quickstats .loans{
+	color: #a00;
+}
+.quickstats div {
+	text-align: center;
+	font-weight: bold;
+	display: none;
+}
+
+.menu {
+	top:  1em;
+	right:  1em;
+	z-index: 21;
+	text-align: right;
+}
+a.nextround {
+	background-color: #0a0;
+	color: #fff;
+}
+
+.actions {
+	bottom: 1em;
+	left: 1em;
+	margin: -50px -50px 0 0;
+}
+.confirm {
+	bottom: 30px;
+	right: 40px;
+	text-align: right;
+}
+
+.confirm a.cancel, .confirm a.accept {
+	border-radius: 2.6em;
+	width: 1.3em;
+	text-align: center;
+	color: #fff;
+}
+.confirm a.cancel {
+	background-color: #a30;
+}
+.confirm a.accept {
+	background-color: #0a0;
+}
+
+.confirm .costs {
+	margin-top: 0.4em;
+	font-size: 2em;
+	line-height: 1em;
+	color: #fff;
+	text-shadow: 1px 2px 2px rgb(0,0,0);
+	
+}
+.confirm .costs.unsecured {
+	font-weight: bold;
+	color: #a00;
+}
+
+a.active {
+	background-color: #0a0 !important;
+	color: #fff !important;
+}
+a.inactive {
+	background-color: #888 !important;
+	color: #aaa !important;
+}
+
+
+.fullstats {
+	font-size: 0.8em;
+	line-height: 1.6em;
+	float: left;
+	display: none;
+	-webkit-transform: scale3d(1, 1, 1);
+	pointer-events:none;
+}
+.fullstats *{
+	pointer-events: all;
+}
+.fullstats .close {
+	float: left;
+	margin: -1em 0 0 -1.6em;
+	border-radius: 2em;
+	width: 1.5em;
+	height: 1.5em;
+	text-align: center;
+	color: #fff;
+	background-color: #0a0;
+	padding: 0.8em;
+}
+.fullstats h3 {
+	font-size: 1em;
+	font-weight: bold;
+	text-align: center;
+	margin: 0;
+}
+.fullstats .round {
+	background-color: #fff;
+	width: 22em;
+	padding: 1.2em;
+	float: left;
+	margin-left: 1em;
+	margin-bottom: 1em;
+}
+.round .section {
+	padding: 1em 0;
+}
+.round .section p{
+	text-align: right;
+	margin: 0;
+}
+.round .section p span.name{
+	float: left;
+}
+.fullstats .section svg
+{
+	width: 100%;
+	height: auto;
+}
+.round p.balance {
+	border-bottom: 1px solid #555;
+	padding-bottom: 4px;
+	margin-bottom: 4px;
+}
+.round p.cost {
+	color: #a00;
+}
+.round p.transaction {
+	padding-left: 1em;
+}
+.round p.subsidies {
+	color: #080;
+	border-top: 1px solid #0b0;
+	padding-top: 4px;
+	margin-top: 4px;
+}
+.round p.detail {
+	font-size: 0.8em;
+	color: #aaa;
+	margin-left: 1.5em;
+	font-style: italic;
+}
+.round p.total, .round p.savingsInterest {
+	border-top: 1px solid #555;
+	padding-top: 4px;
+	margin-top: 4px;
+}
+.fullstats .loanactions {
+	margin-left: 1em;
+	clear: both;
+	pointer-events: none;
+}
+.fullstats .loanactions *{
+	pointer-events: all;
+}
+.fullstats .loanactions a {
+	background-color: #eee;
+	margin-bottom: 1em;
+	margin-right: 0.5em;
+}
+.fullstats .loanactions a .price{
+	font-weight: normal;
+	background-color: #fff;
+	margin-left: 10px;
+	padding: 0.2em;
+	font-size: 0.9em;
+}
+.fullstats .loanactions a.inactive .price{
+	background-color: #999;
+}
+
+
+.nextYearScreen {
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	display: none;
+	z-index: 50;
+}
+.nextYearScreen.animate
+{
+	animation: moveclouds 3s 1;
+	-webkit-animation: moveclouds 3s 1; /* Safari and Chrome */
+}
+.nextYearScreen img{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.nextYearScreen div {
+	position: relative;
+	top: 50%;
+	margin: -1em auto 0 auto;
+	width: 300px;
+	text-align: center;
+	font-size: 3em;
+	font-weight: bold;
+	text-shadow: 0.1em 0.1em 0.2em white;
+	color: #000;
+}
+
+@keyframes moveclouds
+{
+	0% { opacity: 0; left: -10px; }
+	50% { opacity: 1; left: 0px; }
+	90% { opacity: 0; left: 10px; }
+	100% { opacity: 0; left: 10px; }
+}
+
+@-webkit-keyframes moveclouds /* Safari and Chrome */
+{
+	0% { opacity: 0; left: -10px; }
+	50% { opacity: 1; left: 0px; }
+	90% { opacity: 0; left: 10px; }
+	100% { opacity: 0; left: 10px; }
+}
+
+.cursorImage, .overlay {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	-moz-user-select: none; -webkit-user-select: none;
+	pointer-events: none;
+	white-space: nowrap;
+	-webkit-transform: scale3d(1, 1, 1);
+	z-index: 9;
+}
+.cursorImage
+{
+	display: none;
+}
+
+.dialog {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0; left: 0;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 1000;
+	display: none;
+}
+.dialog .window {
+	background-color: #fff;
+	position: relative;
+	top: 18%;
+	width:  20em;
+	padding: 1em;
+	margin: 0 auto 0.5em auto;
+	display: none;
+}
+.dialog .window.playerExpectation {
+	margin: 0 0 0 1em;
+}
+
+.window label {
+	font-size: 0.8em;
+	font-weight: bold;
+}
+.window p{
+	margin-bottom: 1em;
+	line-height: 130%;
+}
+.window input {
+	-webkit-appearance: none;
+	border: 1px solid #ddd;
+	padding: 0.6em;
+	outline: none;
+	font-size: 1em;
+	width: 18.8em;
+}
+.window input[type=text]:focus {
+	outline: none;
+	border: 1px solid #0a0;
+}
+.window input[type=submit], .window a.submit {
+	display: inline-block;
+	width: auto;
+	background-color: #0a0;
+	font-size: 1em;
+	padding: 0.6em;
+	margin: 0 auto;
+	color: #fff;
+	margin: 1em 0.5em 0 0em;
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.33), (min-resolution: 126dpi)
+{ 
+	html, body {
+		background-size: 563px 436px;
+ 	}
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)
+{ 
+	html, body {
+		font-size: 16px;
+        background-size: 375px 290px;
+    }
+}
+@media screen and (max-width:1000px) {
+	body {
+		font-size: 14px;
+		line-height: 100%;
+	}
+}
+@media screen and (max-width:600px) {
+	body {
+		font-size: 10px;
+		line-height: 100%;
+	}
+}

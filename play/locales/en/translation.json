@@ -1,0 +1,78 @@
+{
+	"game": {
+		"year": "Year",
+		"start": "Start Game",
+		"buyCalf": "Buy Calf",
+		"sellCow": "Sell Cow",
+		"moveCow": "Move Cow",
+		"deforest": "Deforest",
+		"restore": "Restore",
+		"intensify": "Intensify",
+		"sellAll": "Select All 2 Year Old",
+		"fillIntensified": "Fill Intensified",
+		"buyLicence": "Buy Licence",
+		"nextYear": "Next Year",
+		"startReal": "Start Real",
+		"restart": "Restart",
+		"finish": "Finish Game"
+	},
+	"stats": {
+		"savings": "Savings",
+		"loans": "Loans",
+		"open": "Open Statistics",
+		"december31": "December 31st",
+		"january1": "January 1st",
+		"savingstitle": "Savings Finance",
+		"loanstitle": "Loans Finance",
+		"interest": "Interest",
+		"cowboycost": "Cowboy Cost",
+		"intensificationcost": "Intensification Repair Cost",
+		"personalcost": "Personal Cost",
+		"totalsavings": "Total Savings",
+		"totalloans": "Total Loans",
+		"loantransaction": "Loan Transaction",
+		"subsidies": "Subsidies",
+		"tco2": "Emission Reduction",
+		"carbonprice": "Carbon Price",
+		"carbonemission": "Carbon Emission",
+		"forest": "Forest",
+		"forestprice": "Forest Price",
+		"cowvalue": "Cow Value",
+		"amortize": "Amortize Loan",
+		"takeloan": "Take Loan"
+	},
+	"dialog": {
+		"startRealWarning": {
+			"title": "Start Real Game?",
+			"text": "If you click Okay, you will quit your training game and start with the real screnarios. Do you want to continue?"
+		},
+		"loanWarning": {
+			"title": "Warning",
+			"text": "You exceeded your bank limit. Loans beyond the loan limit will be charged 25% interest rate."
+		},
+		"restartWarning": {
+			"title": "Restart?",
+			"text": "If you click Okay, you will quit your current game and restart in 2015. Do you want to continue?"
+		},
+		"endYear": {
+			"title": "We had good times...",
+			"text": "This is your last round. Sell all your cows and make as much money as possible. Click 'Finish Game' to continue and enter the highscore list."
+		},
+		"subsidiesFinished": {
+			"title": "Subsidies Finished",
+			"text": "Text."
+		},
+		"expectation": {
+			"title": "Expectations",
+			"cowtext": "Do you expect the cow price to rise or fall?",
+			"carbontext": "Do you expect the carbon price to rise or fall?",
+			"value1": "Increase a lot",
+			"value2": "Increase somewhat",
+			"value3": "Stay more or less the same",
+			"value4": "Fall somewhat",
+			"value5": "Fall a lot"
+		},
+		"accept": "Okay",
+		"cancel": "Cancel"
+	}
+}

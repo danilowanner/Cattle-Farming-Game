@@ -1,0 +1,30 @@
+Index HTML:
+
+Choose: 
+
+Name
+Age
+Country
+Email
+
+
+Watch Intro Video
+View Intro Manual
+
+
+Chose Game Type
+
+- Training
+- Control
+T1 - T6
+
+=>
+New Screen
+
+Choose:
+
+Intro Video Treatment
+Intro Manual 
+Start Game
+
+

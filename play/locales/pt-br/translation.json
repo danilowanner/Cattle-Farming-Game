@@ -1,0 +1,78 @@
+{
+	"game": {
+		"year": "Ano",
+		"start": "Iniciar Jogo",
+		"buyCalf": "Comprar Bezerro",
+		"sellCow": "Vender Boi",
+		"moveCow": "Mover Boi",
+		"deforest": "Desmatar",
+		"restore": "Recuperar",
+		"intensify": "Intensificar",
+		"sellAll": "Selecionar todos os Bois de 2 anos",
+		"fillIntensified": "Preencher Pastos Intensificados",
+		"buyLicence": "Comprar Licença",
+		"nextYear": "Proximo Ano",
+		"startReal": "Começar",
+		"restart": "Recomeçar",
+		"finish": "Terminar Jogo"
+	},
+	"stats": {
+		"savings": "Dinheiro",
+		"loans": "Crédito",
+		"open": "Abrir Finanças",
+		"december31": "31 de Dezembro",
+		"january1": "1 de Janeiro",
+		"savingstitle": "Gastos",
+		"loanstitle": "Créditos",
+		"interest": "Juros",
+		"cowboycost": "Custo do Vaqueiro",
+		"intensificationcost": "Manutenção da Intensificação",
+		"personalcost": "Custo Pessoal",
+		"totalsavings": "Total de Dinheiro",
+		"totalloans": "Total de Créditos",
+		"loantransaction": "Transação de Crédito",
+		"subsidies": "Subsídios",
+		"tco2": "Redução de Emissões",
+		"carbonprice": "Preço do Carbono",
+		"carbonemission": "Emissões de Carbono",
+		"forest": "Mata",
+		"forestprice": "PSA",
+		"cowvalue": "Preço do Boi",
+		"amortize": "Amortizar Crédito",
+		"takeloan": "Pegar Crédito"
+	},
+	"dialog": {
+		"startRealWarning": {
+			"title": "Começar jogo verdadeiro?",
+			"text": "Se você clicar em Okay, voce sairá do modo de treinamento e comecará o jogo definitivo. Você deseja continuar?"
+		},
+		"restartWarning": {
+			"title": "Reinicie?",
+			"text": "Se você clicar em OK, você vai sair do seu jogo atual e reiniciar em 2015. Você quer continuar?"
+		},
+		"loanWarning": {
+			"title": "Cuidado",
+			"text": "Você excedeu o seu limite bancário. Créditos além do limite serão cobrados uma taxa de juros de 25%."
+		},
+		"endYear": {
+			"title": "Foi uma época de vacas gordas...",
+			"text": "Esse é o ultimo turno. Venda todo o seu gado e faça dinheiro. Clique em 'Terminar Jogo' para finalizar."
+		},
+		"subsidiesFinished": {
+			"title": "Subsídios Terminaram",
+			"text": "Daqui em diante não haverá mais subsídios. O jogo irá continuar por mais 20 anos sem pagamentos extras."
+		},
+		"expectation": {
+			"title": "Expectativas",
+			"cowtext": "Você acredita que o preço do Boi vai aumentar ou diminuir?",
+			"carbontext": "Você acredita que o preço do Carbono vai aumentar ou diminuir?",
+			"value1": "Aumente muito",
+			"value2": "Aumente um pouco",
+			"value3": "Fique mais ou menos o mesmo",
+			"value4": "Diminua um pouco",
+			"value5": "Diminua muito"
+		},
+		"accept": "Sim",
+		"cancel": "Não"
+	}
+}

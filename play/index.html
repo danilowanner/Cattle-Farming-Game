@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset=utf-8>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+	
+	<title>Welcome – Cattle Farming Game</title>
+	<style>
+		.clearfix:after {
+		     visibility: hidden;
+		     display: block;
+		     font-size: 0;
+		     content: " ";
+		     clear: both;
+		     height: 0;
+		     }
+		.clearfix { display: inline-block; }
+		/* start commented backslash hack \*/
+		* html .clearfix { height: 1%; }
+		.clearfix { display: block; }
+		/* close commented backslash hack */
+		
+		html, body {
+			background-color: #fff;
+			color: #000;
+			font-family: "Helvetica Neue", Arial, sans-serif;
+			font-size: 19px;
+			line-height: 1.4em;
+			margin: 0;
+			padding: 20px;
+		}
+		
+		h1 {
+			
+		}
+		label {
+			width: 29em;
+			padding: 0 0.5em;
+			float: left;
+			display: inline-block;
+		}
+		input {
+			float: left;
+			display: inline-block;
+			padding: 0.5em;
+			border: 1px solid #d8d8d8;
+			font-size: 1em;
+		}
+		select {
+			font-size: 1em;
+		}
+		input[type="text"] {
+			width: 20em;
+		} 
+		input[type="submit"] {
+			background-color: #0a0;
+			color: #fff;
+			font-size: 1em;
+			padding: 0.5em 1em;
+		}
+		input:focus {
+			border: 1px solid #0a0;
+			outline: none;
+		}
+		.field {
+			padding: 0.5em 0;
+			border-bottom: 1px solid #ccc;
+		}
+		.field:nth-child(even) {
+			background-color: #f8f8f8;
+		}
+		.field.invalid {
+			background-color: #ffefef;
+			border-bottom: 1px solid #f00;
+		}
+		.field:nth-child(even).invalid {
+			background-color: #ffe0e0;
+		}
+		.details {
+			clear: both;
+			display: block;
+			font-size: 0.7em;
+			margin-left: 42.9em;
+			line-height: 1.3em;
+			padding-top: 1em;
+		}
+	</style>
+	<script src="assets/js/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+	<h1>Welcome</h1>
+	<i>Please note that the game works best in Google Chrome and may have issues in other browsers<i>
+	
+	<form method="post" id="questionnaire" action="">
+		<div class="field required clearfix">
+			<label for="name">Name:</label>
+			<input type="text" name="name" value="" />
+		</div>
+		<div class="field required clearfix">
+			<label for="location">Location:</label>
+			<input type="text" name="location" value="" />
+		</div>
+		<div class="field required clearfix">
+			<label for="age">Age:</label>
+			<input type="number" name="age" value="" />
+		</div>
+		<div class="field required clearfix">
+			<label for="email">E-Mail:</label>
+			<input type="text" name="email" value="" />
+		</div>
+		<div class="field clearfix">
+			<label for="gender">Gender:</label>
+			<select name="gender">
+				<option value=""></option>
+				<option value="m">male</option>
+				<option value="f">female</option>
+			</select>
+		</div>
+		<div class="field clearfix">
+			<label for="risk">How do you see yourself: are you generally a person who is fully prepared to take risks or do you try to avoid taking  risks? </label>
+			<select name="risk">
+				<option value=""></option>
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+			<p class="details">Please select on the scale, where the value 0 means: `not at all willing to take risks' and the value 10 means: `very willing to take risks`. With the values in between you can make a differentiated approximation of your attitude.</p>
+		</div>
+		<div class="field clearfix">
+			<label for="treatment">Treatment:</label>
+			<select name="treatment">
+				<option value="random">Random</option>
+				<option value="1">Treatment 1: Volatile Carbon Price</option>
+				<option value="2">Treatment 2: Fixed Carbon Price</option>
+				<option value="3">Treatment 3: Indexed Carbon Price</option>
+				<option value="4">Treatment 4: Fixed Carbon Price Never End</option>
+				<option value="5">Treatment 5: 50% Intensification Subsidy</option>
+				<option value="6">Treatment 6: Control</option>
+				<option value="7">Treatment 7: Baseline Round</option>
+				<option value="8">Treatment 8: Training Round</option>
+			</select>
+			<p class="details">
+			Please select your treatment above.
+			</p>
+		</div>
+		
+		<input type="submit" value="Start" />
+	</form>
+	
+	<script>
+	jQuery(document).ready(initialize);
+	
+	function initialize()
+	{
+		$('#questionnaire').submit(function(e)
+		{
+			e.preventDefault();
+			createPlayer();
+		});
+	}
+
+	
+	function createPlayer()
+	{
+		var valid = true;
+		var data = new Object();
+		$('#questionnaire input[type="text"], #questionnaire input[type="number"], #questionnaire input[type="hidden"], #questionnaire select').each(function()
+		{
+			var name = $(this).attr("name");
+			var val = $(this).val();
+			var required = $(this).parent().is(".required");
+			
+			if(val=="" && required) {
+				valid = false;
+				$(this).parent().addClass("invalid");
+				return;
+			}
+			else
+			{
+				$(this).parent().removeClass("invalid");
+				data[name] = val;
+			}
+		});
+		
+		if(valid)
+		{
+			$.post("server.php?insert=player",
+				data,
+				function(data)
+				{
+					try {
+						var jsonResponse = $.parseJSON(data);
+					} catch (e) {
+						var jsonResponse = false;
+					}
+					
+					if(jsonResponse && jsonResponse.success)
+					{
+						window.location = "game.html";
+					}
+					else alert(data);
+				}
+			);
+		}
+	}
+	</script>
+</body>
+</html>
+	

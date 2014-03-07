@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset=utf-8>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+	
+	<title>Bem Vindo – Cattle Farming Game</title>
+	<style>
+		.clearfix:after {
+		     visibility: hidden;
+		     display: block;
+		     font-size: 0;
+		     content: " ";
+		     clear: both;
+		     height: 0;
+		     }
+		.clearfix { display: inline-block; }
+		/* start commented backslash hack \*/
+		* html .clearfix { height: 1%; }
+		.clearfix { display: block; }
+		/* close commented backslash hack */
+		
+		html, body {
+			background-color: #fff;
+			color: #000;
+			font-family: "Helvetica Neue", Arial, sans-serif;
+			font-size: 19px;
+			line-height: 1.4em;
+			margin: 0;
+			padding: 20px;
+		}
+		
+		h1 {
+			
+		}
+		label {
+			width: 29em;
+			padding: 0 0.5em;
+			float: left;
+			display: inline-block;
+		}
+		input {
+			float: left;
+			display: inline-block;
+			padding: 0.5em;
+			border: 1px solid #d8d8d8;
+			font-size: 1em;
+		}
+		select {
+			font-size: 1em;
+		}
+		input[type="text"] {
+			width: 20em;
+		} 
+		input[type="submit"] {
+			background-color: #0a0;
+			color: #fff;
+			font-size: 1em;
+			padding: 0.5em 1em;
+		}
+		input:focus {
+			border: 1px solid #0a0;
+			outline: none;
+		}
+		.field {
+			padding: 0.5em 0;
+			border-bottom: 1px solid #ccc;
+		}
+		.field:nth-child(even) {
+			background-color: #f8f8f8;
+		}
+		.field.invalid {
+			background-color: #ffefef;
+			border-bottom: 1px solid #f00;
+		}
+		.field:nth-child(even).invalid {
+			background-color: #ffe0e0;
+		}
+		.details {
+			clear: both;
+			display: block;
+			font-size: 0.7em;
+			margin-left: 42.9em;
+			line-height: 1.3em;
+			padding-top: 1em;
+		}
+	</style>
+	<script src="assets/js/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+	<h1>Bem Vindo</h1>
+	<i>Por favor, note que o jogo funciona melhor no Google Chrome e pode ter problemas em outros navegadores<i>
+	
+	<form method="post" id="questionnaire" action="">
+		<div class="field required clearfix">
+			<label for="name">Nome:</label>
+			<input type="text" name="name" value="" />
+		</div>
+		<div class="field required clearfix">
+			<label for="location">Local:</label>
+			<input type="text" name="location" value="" />
+		</div>
+		<div class="field required clearfix">
+			<label for="age">Idade:</label>
+			<input type="number" name="age" value="" />
+		</div>
+		<div class="field required clearfix">
+			<label for="email">E-Mail:</label>
+			<input type="text" name="email" value="" />
+		</div>
+		<div class="field clearfix">
+			<label for="gender">Sexo:</label>
+			<select name="gender">
+				<option value=""></option>
+				<option value="m">masculino</option>
+				<option value="f">feminino</option>
+			</select>
+		</div>
+		<div class="field clearfix">
+			<label for="risk">Como você se vê: Você se considera uma pessoa totalmente preparada a correr riscos ou você prefere evitar? </label>
+			<select name="risk">
+				<option value=""></option>
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+			<p class="details">Por favor escolha nesta escala, onde o Valor "0" representa : "Não estou disposto a correr riscos de forma alguma" e o valor "10" representa: "Estou bastante disposto a correr riscos". Com os valores desta forma você pode fazer uma aproximação da sua atitude.</p>
+		</div>
+		<div class="field clearfix">
+			<label for="treatment">Tipo de Jogo:</label>
+			<select name="treatment">
+				<option value="random">Aleatório</option>
+				<option value="1">Typo 1: preço do carbono volátil</option>
+				<option value="2">Typo 2: preço do carbono fixo</option>
+				<option value="3">Typo 3: preço área fixa</option>
+				<option value="4">Typo 4: preço área indexada</option>
+				<option value="5">Typo 5: preço área fixa para sempre</option>
+				<option value="6">Typo 6: controle</option>
+				<option value="7">Typo 7: rodada de linha de base</option>
+				<option value="8">Typo 8: treinamento rodada</option>
+			</select>
+			<p class="details">
+			Selecione seu tipo de jogo acima.
+			</p>
+		</div>
+		
+		<input type="submit" value="Start" />
+	</form>
+	
+	<script>
+	jQuery(document).ready(initialize);
+	
+	function initialize()
+	{
+		$('#questionnaire').submit(function(e)
+		{
+			e.preventDefault();
+			createPlayer();
+		});
+	}
+	
+	
+	function createPlayer()
+	{
+		var valid = true;
+		var data = new Object();
+		$('#questionnaire input[type="text"], #questionnaire input[type="number"], #questionnaire input[type="hidden"], #questionnaire select').each(function()
+		{
+			var name = $(this).attr("name");
+			var val = $(this).val();
+			var required = $(this).parent().is(".required");
+			
+			if(val=="" && required) {
+				valid = false;
+				$(this).parent().addClass("invalid");
+				return;
+			}
+			else
+			{
+				$(this).parent().removeClass("invalid");
+				data[name] = val;
+			}
+		});
+		
+		if(valid)
+		{
+			$.post("server.php?insert=player",
+				data,
+				function(data)
+				{
+					try {
+						var jsonResponse = $.parseJSON(data);
+					} catch (e) {
+						var jsonResponse = false;
+					}
+					
+					if(jsonResponse && jsonResponse.success)
+					{
+						window.location = "game.html";
+					}
+					else alert(data);
+				}
+			);
+		}
+	}
+	</script>
+</body>
+</html>
+	

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset=utf-8>
+	<title>Cattle Farming Game</title>
+	
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+	
+	<meta name=apple-mobile-web-app-capable content=yes>
+	<meta name=apple-mobile-web-app-status-bar-style content=black>
+	
+	<link href="assets/style.css" rel="stylesheet">
+	<script src="assets/js/jquery-1.8.3.min.js"></script>
+	
+	<script type="text/javascript" src="assets/js/core/core.js"></script>
+	<script type="text/javascript" src="assets/js/yepnope-1.5.3.min.js"></script>
+	<script type="text/javascript" src="assets/js/i18next-1.7.1.min.js"></script>
+	<script type="text/javascript" src="assets/js/core/AssetLoader.js"></script>
+	
+	<script>
+		var canvas,ctx;
+		
+		jQuery(document).ready(initialize);
+		
+		function initialize()
+		{
+			// Internationalization Init
+			i18n.init(function(t) {
+				// Translate whole Page
+				$("body").i18n();
+			});
+			
+			// Load Intro Video
+			$.getJSON("server.php",
+				{ get: "videotutorial" },
+				function(video)
+				{
+					if(video)
+					{
+						var videoUrl = video.filename;
+						var videoUrlOgv = video.filename.replace(".mp4",".ogv");
+						
+						var videoElem = $("<video>").addClass("tutorial").attr("controls","false");
+						$("<source>").attr("src",videoUrl).attr("type","video/mp4").appendTo(videoElem);
+						$("<source>").attr("src",videoUrlOgv).attr("type","video/ogg").appendTo(videoElem);
+						var videoTutorialDiv = $("<div>").addClass("videoTutorial").appendTo("body");
+						videoElem.appendTo(videoTutorialDiv);
+						
+						videoElem[0]
+							.addEventListener("ended", function() {
+								if (document.exitFullscreen) {
+								    document.exitFullscreen();
+								}
+								else if (document.mozCancelFullScreen) {
+								    document.mozCancelFullScreen();
+								}
+								else if (document.webkitCancelFullScreen) {
+								    document.webkitCancelFullScreen();
+								}
+								$(".videoTutorial").fadeOut(1000);
+							}, true);
+					}
+				}
+			);
+			
+			// Setup "Load Game" Click Listener
+			$('a[href="#loadGame"]').click(function(e)
+			{
+				e.preventDefault();
+				$(this).remove();
+				$(".introtext").remove();
+				
+				// Go into Fullscreen
+				var el = document.documentElement
+				var rfs =
+				           el.requestFullScreen
+				        || el.webkitRequestFullScreen
+				        || el.mozRequestFullScreen
+				        || el.msRequestFullScreen;
+				
+				if(rfs!=undefined) rfs.call(el);
+				
+				// Wait until Browser is in Fullscreen, then Load Game
+				setTimeout(loadGame,200);
+			});
+		}
+		
+		// Function to Load Game Scripts
+		function loadGame()
+		{	
+			var scriptList = [
+			    // List of Script-URLs with Caching Prevention 
+				"assets/js/core/GameEngine.js"+"?v="+Math.ceil(Math.random()*100000),
+				"assets/js/core/RenderEngine.js"+"?v="+Math.ceil(Math.random()*100000),
+				"assets/js/core/InputEngine.js"+"?v="+Math.ceil(Math.random()*100000),
+				"assets/js/core/SoundEngine.js"+"?v="+Math.ceil(Math.random()*100000),
+				"assets/js/core/Network.js"+"?v="+Math.ceil(Math.random()*100000),
+				/*"assets/js/core/NetworkOffline.js"+"?v="+Math.ceil(Math.random()*100000),*/
+				"assets/js/class/Entity.js"+"?v="+Math.ceil(Math.random()*100000),
+				"assets/js/class/Map.js"+"?v="+Math.ceil(Math.random()*100000),
+				"assets/js/class/Tile.js"+"?v="+Math.ceil(Math.random()*100000),
+				"assets/js/class/Cow.js"+"?v="+Math.ceil(Math.random()*100000)
+			];
+			setupGame = function(assets)
+			{
+				RenderEngine.setup();
+				GameEngine.setup();
+				InputEngine.setup();
+				SoundEngine.setup();
+			};
+			yepnope({
+				load: scriptList,
+				complete: function()
+				{
+					AssetLoader.loadAssets(["250_cow-b.png","250_calf-b.png"],function(){});
+					AssetLoader.loadAssetsForEntityClasses([CowClass,EntityClass],setupGame);
+				}
+			});
+		}
+		
+		// Request Animation Frame Polyfill by Paul Irish
+		// http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+		(function() {
+		    var lastTime = 0;
+		    var vendors = ['webkit', 'moz'];
+		    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+		        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+		        window.cancelAnimationFrame =
+		          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+		    }
+		
+		    if (!window.requestAnimationFrame)
+		        window.requestAnimationFrame = function(callback, element) {
+		            var currTime = new Date().getTime();
+		            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+		            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+		              timeToCall);
+		            lastTime = currTime + timeToCall;
+		            return id;
+		        };
+		
+		    if (!window.cancelAnimationFrame)
+		        window.cancelAnimationFrame = function(id) {
+		            clearTimeout(id);
+		        };
+		}());
+	</script>
+</head>
+<body>
+	<a href="#loadGame" class="loadButton">
+		<img src="assets/images/game-startimg.png" /><br/>
+		<span data-i18n="game.start"></span>
+	</a>
+	<div class="gameCanvasContainer">
+		<canvas id="gameCanvas"></canvas>
+	</div>
+	<div class="textOut"></div>
+	<div class="renderTime"></div>
+	<div class="tickTime"></div>
+	<div class="experimenterHint"></div>
+	<div class="cursorImage"><img src="" /></div>
+	
+	<div class="statsbg"></div>
+	<div class="stats">
+		<a href="#stats" class="quickstats">
+			<h2 class="round"><span data-i18n="game.year"></span>&nbsp;<span class="year">0</span></h2>
+			<p class="savings"><strong data-i18n="stats.savings"></strong><span>15'300</span> R$</p>
+			<p class="loans"><strong data-i18n="stats.loans"></strong><span>20'000</span> R$ </p>
+			<div data-i18n="stats.open"></div>
+		</a>
+		<div class="fullstats">
+			<div class="round this">
+				<h2>2014</h2>
+				<div class="section">
+					<h3 data-i18n="stats.savingstitle"></h3>
+					<p class="savings balance"><span class="name"><strong data-i18n="stats.savings"></strong>, <span data-i18n="stats.december31"></span></span><span class="amount"></span> R$</p>
+					<p class="repairCost transaction cost"><span class="name" data-i18n="stats.intensificationcost"></span> <span class="amount"></span> R$</p>
+					<p class="personalCost transaction cost"><span class="name" data-i18n="stats.personalcost"></span> <span class="amount"></span> R$</p>
+					<p class="loanTransaction transaction"><span class="name" data-i18n="stats.loantransaction"></span> <span class="amount"></span> R$</p>
+					<p class="subsidies transaction income"><span class="name" data-i18n="stats.subsidies"></span> <span class="amount"></span> R$</p>
+					<p class="tco2 transaction detail"><span class="name" data-i18n="stats.tco2"></span> <span class="amount"></span></p>
+					<p class="carbonPrice transaction detail"><span class="name" data-i18n="stats.carbonprice"></span> <span class="amount"></span></p>
+					<p class="forest transaction detail"><span class="name" data-i18n="stats.forest"></span> <span class="amount"></span></p>
+					<p class="forestPrice transaction detail"><span class="name" data-i18n="stats.forestprice"></span> <span class="amount"></span></p>
+					
+					<p class="savingsInterest transaction income"><span class="name" data-i18n="stats.interest"></span> <span class="amount"></span> R$</p>
+					<p class="savings total"><span class="name"><strong data-i18n="stats.totalsavings"></strong>, <span data-i18n="stats.january1"></span> <span class="year"></span></span> <span class="amount"></span> R$</p>
+				</div>
+				<div class="section">
+					<h3 data-i18n="stats.loanstitle"></h3>	
+					<p class="loans cost balance"><span class="name"><strong data-i18n="stats.loans"></strong>, <span data-i18n="stats.december31"></span></span> <span class="amount"></span> R$</p>
+					<p class="loanTransaction transaction "><span class="name" data-i18n="stats.loantransaction"></span> <span class="amount"></span> R$</p>
+					<p class="loanInterest transaction cost"><span class="name" data-i18n="stats.interest"></span> <span class="amount"></span> R$</p>
+					<p class="loan total cost"><span class="name"><strong data-i18n="stats.totalloans"></strong>, <span data-i18n="stats.january1"></span> <span class="year"></span></span> <span class="amount"></span> R$</p>
+				</div>
+			</div>
+			<div class="round last">
+				<h2>2013 - 2015</h2>
+				<div class="section carbon">
+					<h3 data-i18n="stats.carbonemission"></h3>
+					<svg class="graph carbonEmission" xmlns="http://www.w3.org/2000/svg" version="1.1" width="600" height="200" viewBox="0 0 600 200">
+					  <polyline class="baseline" points="" style="fill:none;stroke:#25e;stroke-width:2" />
+					</svg>
+					<h3 data-i18n="stats.carbonprice"></h3>
+					<p class="carbonprice"><span class="name" data-i18n="stats.carbonprice"></span><span class="amount"></span> R$</p>
+					<svg class="graph carbon" xmlns="http://www.w3.org/2000/svg" version="1.1" width="400" height="80" viewBox="0 0 400 80">
+					  <line style="shape-rendering: crispEdges; stroke: #ccc;stroke-width:1" x1="0" y1="20" x2="400" y2="20" />
+					  <line style="shape-rendering: crispEdges; stroke: #ccc;stroke-width:1" x1="0" y1="40" x2="400" y2="40" />
+					  <line style="shape-rendering: crispEdges; stroke: #ccc;stroke-width:1" x1="0" y1="60" x2="400" y2="60" />
+					  <line style="shape-rendering: crispEdges; stroke: #ccc;stroke-width:1" x1="0" y1="80" x2="400" y2="80" />
+					  <polyline points="" style="fill:none;stroke:#0a0;stroke-width:4" />
+					</svg>
+					
+				</div>
+				<div class="section">
+					<h3 data-i18n="stats.cowvalue"></h3>
+					<p class="cowvalue"><span class="name" data-i18n="stats.cowvalue"></span><span class="amount"></span> R$</p>
+					<svg class="graph cow" xmlns="http://www.w3.org/2000/svg" version="1.1" width="400" height="80" viewBox="0 0 400 80">
+						<line style="shape-rendering: crispEdges; stroke: #ccc;stroke-width:1" x1="0" y1="20" x2="400" y2="20" />
+						<line style="shape-rendering: crispEdges; stroke: #ccc;stroke-width:1" x1="0" y1="40" x2="400" y2="40" />
+						<line style="shape-rendering: crispEdges; stroke: #ccc;stroke-width:1" x1="0" y1="60" x2="400" y2="60" />
+						<line style="shape-rendering: crispEdges; stroke: #ccc;stroke-width:1" x1="0" y1="80" x2="400" y2="80" />
+						<polyline points="" style="fill:none;stroke:#0a0;stroke-width:4" />
+					</svg>
+					</div>
+			</div>
+			<a href="#closestats" class="close">✘</a>
+			<!--div class="loanactions">
+				<a href="#amortizeloan"><span data-i18n="stats.amortize"></span><span class="price">- 100,000 R$</span></a>
+				<a href="#takeloan"><span data-i18n="stats.takeloan"></span><span class="price">+ 100,000 R$</span></a>
+			</div-->
+			
+		</div>
+	</div>
+	<div class="actions">
+		<a href="#buycow" data-i18n="game.buyCalf"></a>
+		<a href="#sellcow" data-i18n="game.sellCow"></a>
+		<a href="#movecow" data-i18n="game.moveCow"></a>
+		<br/>
+		<a href="#defo" data-i18n="game.deforest"></a>
+		<a href="#rest" data-i18n="game.restore"></a>
+		<a href="#intens" data-i18n="game.intensify"></a>
+	</div>
+	<div class="confirm">
+		<a href="#sellall" class="sellall" data-i18n="game.sellAll"></a>
+		<a href="#fillintensified" class="fillintensified" data-i18n="game.fillIntensified"></a>
+		<a href="#cancel" class="cancel">✘</a>
+		<a href="#accept" class="accept">✔</a>
+		<a href="#buylicence" class="licence" data-i18n="game.buyLicence"></a>
+		<div class="costs"><span>0</span> R$</div>
+	</div>
+	<div class="nextYearScreen">
+		<img src="assets/images/clouds.png" />
+		<div>2014</div>
+	</div>
+	<div class="menu">
+		<a class="nextround" href="#nextround">↳ <span data-i18n="game.nextYear"></span></a><br/>
+		<a class="restart" href="#restart" data-i18n="game.restart"></a>
+		<a class="startreal" href="#startreal" data-i18n="game.startReal"></a>
+	</div>
+	<div class="dialog">
+		<div class="window restartWarning">
+			<h2 data-i18n="dialog.restartWarning.title"></h2>
+			<p data-i18n="dialog.restartWarning.text"></p>
+			<a class="submit" href="#restartconfirm" data-i18n="dialog.accept"></a>
+			<a class="submit" href="#closeWindow" data-i18n="dialog.cancel"></a>
+		</div>
+		<div class="window startRealWarning">
+			<h2 data-i18n="dialog.startRealWarning.title"></h2>
+			<p data-i18n="dialog.startRealWarning.text"></p>
+			<a class="submit" href="#startrealconfirm" data-i18n="dialog.accept"></a>
+			<a class="submit" href="#closeWindow" data-i18n="dialog.cancel"></a>
+		</div>
+		<div class="window loanWarning">
+			<h2 data-i18n="dialog.loanWarning.title"></h2>
+			<p data-i18n="dialog.loanWarning.text"></p>
+			<a class="submit" href="#closeWindow" data-i18n="dialog.accept"></a>
+		</div>
+		<div class="window endYear">
+			<h2 data-i18n="dialog.endYear.title"></h2>
+			<p data-i18n="dialog.endYear.text"></p>
+			<a class="submit" href="#closeWindow" data-i18n="dialog.accept"></a>
+		</div>
+		<div class="window subsidiesFinished">
+			<h2 data-i18n="dialog.subsidiesFinished.title"></h2>
+			<p data-i18n="dialog.subsidiesFinished.text"></p>
+			<a class="submit" href="#closeWindow" data-i18n="dialog.accept"></a>
+		</div>
+		<div class="window playerExpectation">
+			<h2 data-i18n="dialog.expectation.title"></h2>
+			<form id="playerExpectation">
+				<div class="cowExpectation">
+				<p data-i18n="dialog.expectation.cowtext"></p>
+				<select name="cowPriceExpectation">
+					<option value="1" data-i18n="dialog.expectation.value1"></option>
+					<option value="2" data-i18n="dialog.expectation.value2"></option>
+					<option value="3" data-i18n="dialog.expectation.value3" selected="selected"></option>
+					<option value="4" data-i18n="dialog.expectation.value4"></option>
+					<option value="5" data-i18n="dialog.expectation.value5"></option>
+				</select>
+				</div>
+				<div style="margin-top: 1em" class="carbonExpectation">
+					<p data-i18n="dialog.expectation.carbontext"></p>
+					<select name="carbonPriceExpectation">
+						<option value="1" data-i18n="dialog.expectation.value1"></option>
+						<option value="2" data-i18n="dialog.expectation.value2"></option>
+						<option value="3" data-i18n="dialog.expectation.value3" selected="selected"></option>
+						<option value="4" data-i18n="dialog.expectation.value4"></option>
+						<option value="5" data-i18n="dialog.expectation.value5"></option>
+					</select>
+				</div>
+				<input type="submit" data-i18n="[value]dialog.accept;" />
+			</form>
+		</div>
+	</div>
+</body>
+</html>
