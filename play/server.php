@@ -103,8 +103,8 @@ if(!empty($insert))
 			$playerWithSameEmail = $pdo -> query('SELECT id, email FROM player WHERE email="'.$_POST["email"].'"') -> fetch(PDO::FETCH_OBJ);
 			if( $playerWithSameEmail !== false )
 			{
-				$_SESSION['playerID'] = $playerWithSameEmail -> id;
-				$pdo -> exec( 'UPDATE player SET `treatment` = "'.$_POST["treatment"].'"' );
+				$_SESSION['playerID'] = $playerWithSameEmail -> id; 
+				$pdo -> exec( 'UPDATE player SET `treatment` = "'.$_POST["treatment"].'" WHERE id='.$playerWithSameEmail -> id );
 			}
 			else {
 				$pdo->exec(createInsertStatement($insert,$_POST)) or die(print_r($pdo->errorInfo(), true));
