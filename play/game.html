@@ -46,6 +46,16 @@
 						var videoTutorialDiv = $("<div>").addClass("videoTutorial").appendTo("body");
 						videoElem.appendTo(videoTutorialDiv);
 						
+						var loadsFailed = 0;
+						videoElem.find("source").on("error", function (e) {
+							loadsFailed++;
+							if(loadsFailed>=2)
+							{
+								$(".videoTutorial").fadeOut(1000);
+								alert("Error loading video tutorial file!");
+							}
+						});
+						
 						videoElem[0]
 							.addEventListener("ended", function() {
 								if (document.exitFullscreen) {
@@ -59,6 +69,8 @@
 								}
 								$(".videoTutorial").fadeOut(1000);
 							}, true);
+						
+						
 					}
 				}
 			);
