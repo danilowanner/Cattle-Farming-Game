@@ -1,6 +1,4 @@
 <?php
-//phpinfo();
-
 require ('config.php');
 
 ini_set('display_errors','On');
@@ -10,14 +8,17 @@ ini_set('session.use_only_cookies', 1);
 ini_set('session.use_trans_sid',    0);
 ini_set('session.gc_maxlifetime', 345600);
 
-session_save_path("/nas/stim/play/sessions");
-
-
-$server   = 'mysql:dbname='.DB_NAME.'; host='.DB_HOST.'; port='.DB_PORT;
-$pdo = new PDO($server, DB_USER, DB_PASSWORD);
+try {
+	$server   = 'mysql:dbname='.DB_NAME.'; host='.DB_HOST.'; port='.DB_PORT;
+	$pdo = new PDO($server, DB_USER, DB_PASSWORD);
+}
+catch(PDOException $e)
+{
+	exit("Unable to connect to MySQL Database. Check your configuration. ".$e->getMessage());
+}
 
 // Setup Session and corresponding User
-session_set_cookie_params(31536000); // Lebensdauer 1 Jahr
+session_set_cookie_params(31536000); // 1 year
 session_start();
 
 $playerID = isset($_SESSION['playerID']) ? $_SESSION['playerID'] : false;
@@ -100,11 +101,15 @@ if(!empty($insert))
 	switch($insert)
 	{
 		case "player":
-			$playerWithSameEmail = $pdo -> query('SELECT id, email FROM player WHERE email="'.$_POST["email"].'"') -> fetch(PDO::FETCH_OBJ);
-			if( $playerWithSameEmail !== false )
+			$playersWithSameEmail = $pdo -> query('SELECT id, email FROM player WHERE email="'.$_POST["email"].'"');
+			if($playersWithSameEmail) $existingPlayer = $playersWithSameEmail->fetch(PDO::FETCH_OBJ);
+			else $existingPlayer = false;
+			
+			// If an existing player is found (with the same email as the one that should be created), simply update treatment of existing user. Else create a new user with all the provided information.
+			if( $existingPlayer !== false )
 			{
-				$_SESSION['playerID'] = $playerWithSameEmail -> id; 
-				$pdo -> exec( 'UPDATE player SET `treatment` = "'.$_POST["treatment"].'" WHERE id='.$playerWithSameEmail -> id );
+				$_SESSION['playerID'] = $existingPlayer -> id; 
+				$pdo -> exec( 'UPDATE player SET `treatment` = "'.$_POST["treatment"].'" WHERE id='.$existingPlayer -> id );
 			}
 			else {
 				$pdo->exec(createInsertStatement($insert,$_POST)) or die(print_r($pdo->errorInfo(), true));
