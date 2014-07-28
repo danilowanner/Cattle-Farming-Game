@@ -130,9 +130,15 @@ SoundClip = Class.extend({
 	    		this.source = SoundEngine.audioContext.createBufferSource();
 				
 				this.source.buffer = this.buffer;
-				this.source.gain.value = this.volume;
-				this.source.connect(SoundEngine.audioContext.destination);
 				this.source.loop = this.loop;
+				
+				// Create gain node and set volume
+				this.gainNode = SoundEngine.audioContext.createGain();
+				this.gainNode.value = this.volume;
+				
+				// Connect source through gain node to output
+				this.source.connect(this.gainNode);
+				this.gainNode.connect(SoundEngine.audioContext.destination);
 				
 				var sc = this;
 				this.source.onended = function()
@@ -140,7 +146,7 @@ SoundClip = Class.extend({
 					sc.playing = false;
 				}//this.playTimer = setTimeout(function() { sc.playing = false; }, Math.round(this.source.buffer.duration*1000));
 				
-				this.source.noteOn(0);
+				this.source.start(0);
 				this.playing = true;
 			}
 		    
