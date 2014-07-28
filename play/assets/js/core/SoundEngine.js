@@ -134,7 +134,7 @@ SoundClip = Class.extend({
 				
 				// Create gain node and set volume
 				this.gainNode = SoundEngine.audioContext.createGain();
-				this.gainNode.value = this.volume;
+				this.gainNode.gain.value = this.volume;
 				
 				// Connect source through gain node to output
 				this.source.connect(this.gainNode);
@@ -165,8 +165,8 @@ SoundClip = Class.extend({
 		if(this.playing)
 		{
 			var fade = function() {
-				me.source.gain.value -= 0.06;
-				if (me.source.gain.value>0.1)
+				me.gainNode.gain.value -= 0.06;
+				if (me.gainNode.gain.value>0.1)
 				{
 					setTimeout(fade, 50);
 				}
