@@ -5,7 +5,7 @@
 4. Run both Apache and MySQL and navigate your browser to the correct local address (default: http://localhost:8888)
 
 # About the Cattle Farming Game
-The Cattle Farming Game is a tool developed in a research project by the ETH Zurich (Eidgenössische Technische Hochschule Zürich) and the FHNW (University of Applied Sciences Northwestern Switzerland). You can see an online version of the project here: http://n.ethz.ch/~stim/
+The Cattle Farming Game is a tool developed in a research project by the ETH Zurich (Eidgenössische Technische Hochschule Zürich) and the FHNW (University of Applied Sciences Northwestern Switzerland). You can see an online version of the project here: https://www.environmental-games.uni-osnabrueck.de/cattle/
 
 # Additional Information 
 
